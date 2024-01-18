@@ -18,11 +18,11 @@ class ListUpdaterApp:
 
     def update_data(self):
         data = list(self.shared_data)
-        data = list(''.join(data))
+        data = [''.join(data)]
         self.listbox.delete(0, tk.END)
         for item in data:
             self.listbox.insert(tk.END, item)
-        print(self.shared_data)
+
         self.root.after(1000, self.update_data)
 
 
@@ -46,13 +46,13 @@ def editor(shared_queue, shared_data):
 
         if shared_queue:
             out = shared_queue.pop(0)
-            print(f'Popped "{out}" from shared_queue')
+            # print(f'Popped "{out}" from shared_queue')
             # data, index = update_data(data, index, out)
-            print(out)
+            # print(out)
 
             # Update shared data
             shared_data.append(out)
-            print(shared_data)
+            # print(shared_data)
 
 
 def update_data(data, index, char):
@@ -71,7 +71,8 @@ if __name__ == '__main__':
         shared_queue = manager.list()
         shared_data = manager.list()
 
-        pKeyRead = Process(target=read_keyboard, args=(shared_queue, shared_data))
+        pKeyRead = Process(target=read_keyboard,
+                           args=(shared_queue, shared_data))
         pRunEditor = Process(target=editor, args=(shared_queue, shared_data))
         pRunWindow = Process(target=run_window, args=(shared_data,))
 
