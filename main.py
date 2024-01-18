@@ -18,8 +18,8 @@ class ListUpdaterApp:
         self.update_data()
 
     def update_data(self):
-        
-        data = ''.join(self.shared_data).split('enter')
+
+        data = ''.join(self.shared_data).split('#$1')
         self.listbox.delete(0, tk.END)
         for item in data:
             self.listbox.insert(tk.END, item)
@@ -48,18 +48,21 @@ def editor(shared_queue, shared_data):
         if shared_queue:
             out = shared_queue.pop(0)
             # Make changes to out here
-            hmap={'enter':''}
+            hmap = {'enter': '#$1', 'space':' '}
             if out in hmap:
                 out = hmap[out]
-            
+
             shared_data.append(out)
             # print("Shared data: ", shared_data)
 
-def run_window(shared_data):
+
+def run_window(shared_data, shared_queue):
     root = tk.Tk()
     app = ListUpdaterApp(root, shared_data)
     root.mainloop()
     print("Close me now...")
+
+    shared_queue.append('esc')
 
 
 if __name__ == '__main__':
@@ -70,7 +73,8 @@ if __name__ == '__main__':
         pKeyRead = Process(target=read_keyboard,
                            args=(shared_queue, shared_data))
         pRunEditor = Process(target=editor, args=(shared_queue, shared_data))
-        pRunWindow = Process(target=run_window, args=(shared_data,))
+        pRunWindow = Process(
+            target=run_window, args=(shared_data, shared_queue))
 
         pRunEditor.start()
         pKeyRead.start()
