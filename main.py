@@ -2,26 +2,39 @@ from multiprocessing import Process, Manager
 import time
 import keyboard
 
+
+def update_data(data, index, char):
+    # Wriet code
+    print(data, index)
+    return data, index
+
+
+def update_windows(data):
+    return
+
+
 def read_keyboard(shared_queue):
     def on_key_event(e, shared_queue):
-        if e.event_type == 'up' or e.name =='esc':
+        if e.event_type == 'up' or e.name == 'esc':
             shared_queue.append(e.name)
             # print("Shared q 1:", shared_queue)
         return e
 
     keyboard.hook(lambda e: on_key_event(e, shared_queue))
     keyboard.wait('esc')
-        
+
+
 def editor(shared_queue):
     out = ''
+    data = [[]]
+    index = 0,0
     while out != 'esc':
         time.sleep(0.1)
         if shared_queue:
             out = shared_queue.pop(0)
-            print(f'Popped "{out}" from shared_queue')      
-
-
-
+            print(f'Popped "{out}" from shared_queue')
+            data, index = update_data(data, index, out)
+            update_windows(data)
 
 
 if __name__ == '__main__':
