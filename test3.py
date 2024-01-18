@@ -24,7 +24,7 @@ class ListUpdaterApp:
         for item in data:
             self.listbox.insert(tk.END, item)
 
-        self.root.after(1000, self.update_data)
+        self.root.after(100, self.update_data)
 
 
 def read_keyboard(shared_queue, shared_data):
@@ -65,6 +65,7 @@ def run_window(shared_data):
     root = tk.Tk()
     app = ListUpdaterApp(root, shared_data)
     root.mainloop()
+    print("goat")
 
 
 if __name__ == '__main__':
