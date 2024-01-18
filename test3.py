@@ -18,6 +18,7 @@ class ListUpdaterApp:
 
     def update_data(self):
         data = list(self.shared_data)
+        data = list(''.join(data))
         self.listbox.delete(0, tk.END)
         for item in data:
             self.listbox.insert(tk.END, item)
