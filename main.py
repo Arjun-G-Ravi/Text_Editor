@@ -18,8 +18,8 @@ class ListUpdaterApp:
         self.update_data()
 
     def update_data(self):
-        data = list(self.shared_data)
-        data = [''.join(data)]
+        
+        data = ''.join(self.shared_data).split('enter')
         self.listbox.delete(0, tk.END)
         for item in data:
             self.listbox.insert(tk.END, item)
@@ -47,25 +47,15 @@ def editor(shared_queue, shared_data):
 
         if shared_queue:
             out = shared_queue.pop(0)
-            # print(f'Popped "{out}" from shared_queue')
-            # data, index = update_data(data, index, out)
-            # print(out)
-
-            # Update shared data
+            
             shared_data.append(out)
-            # print(shared_data)
-
-
-def update_data(data, index, char):
-    print(data, index)
-    return data, index
-
+            # print("Shared data: ", shared_data)
 
 def run_window(shared_data):
     root = tk.Tk()
     app = ListUpdaterApp(root, shared_data)
     root.mainloop()
-    print("goat")
+    print("Close me now...")
 
 
 if __name__ == '__main__':
