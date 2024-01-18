@@ -1,4 +1,5 @@
 import tkinter as tk
+import keyboard
 
 class ListDisplayApp:
     def __init__(self, initial_list):
@@ -26,3 +27,16 @@ class ListDisplayApp:
 # Create an instance of the ListDisplayApp with the initial list
 initial_list = ["Item 1", "Item 2", "Item 3", "Item 4"]
 app = ListDisplayApp(initial_list)
+
+
+
+
+import keyboard
+
+def on_key_event(e):
+    print(f'Key {e.name} {e.event_type}')
+
+keyboard.hook(on_key_event)
+
+# Keep the program running
+keyboard.wait('esc')

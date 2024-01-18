@@ -1,9 +1,31 @@
+from multiprocessing import Process
+import os
+import time
 import keyboard
 
-def on_key_event(e):
-    print(f'Key {e.name} {e.event_type}')
+global shared_queue
+shared_queue = []
 
-keyboard.hook(on_key_event)
+def read_keyboard():
+    def on_key_event(e):
+        shared_queue.append(e)
+        return e
 
-# Keep the program running
-keyboard.wait('esc')
+    keyboard.hook(on_key_event)
+    keyboard.wait('esc')
+        
+def editor():
+    l = []
+    if shared_queue:
+        l.append(shared_queue.pop(0))        
+
+print(shared_queue)
+pKeyRead = Process(target=read_keyboard)
+pRunEditor = Process(target=editor)
+pRunEditor.start()
+pKeyRead.start()
+pRunEditor.join()
+pKeyRead.join()
+
+
+
