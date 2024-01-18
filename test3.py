@@ -5,22 +5,24 @@ import tkinter as tk
 
 
 class ListUpdaterApp:
-    def __init__(self, root):
+    def __init__(self, root, shared_data):
         self.root = root
-        self.root.title("List Updater")
+        self.root.title("COW - Text Editor")
 
-        self.my_list = ['cow']
+        self.shared_data = shared_data
 
         self.listbox = tk.Listbox(root)
         self.listbox.pack(pady=10)
-        self.add_data(self.my_list)
 
-    def add_data(self, data):
-        self.my_list = data
+        self.update_data()
+
+    def update_data(self):
+        data = list(self.shared_data)
         self.listbox.delete(0, tk.END)
-        for item in self.my_list:
+        for item in data:
             self.listbox.insert(tk.END, item)
-        self.root.after(1000, lambda: self.add_data(data))
+        print(self.shared_data)
+        self.root.after(1000, self.update_data)
 
 
 def read_keyboard(shared_queue, shared_data):
@@ -35,7 +37,7 @@ def read_keyboard(shared_queue, shared_data):
 
 def editor(shared_queue, shared_data):
     out = ''
-    data = [[]]
+    data = []
     index = 0, 0
 
     while out != 'esc':
@@ -44,7 +46,12 @@ def editor(shared_queue, shared_data):
         if shared_queue:
             out = shared_queue.pop(0)
             print(f'Popped "{out}" from shared_queue')
-            data, index = update_data(data, index, out)
+            # data, index = update_data(data, index, out)
+            print(out)
+
+            # Update shared data
+            shared_data.append(out)
+            print(shared_data)
 
 
 def update_data(data, index, char):
@@ -54,7 +61,7 @@ def update_data(data, index, char):
 
 def run_window(shared_data):
     root = tk.Tk()
-    app = ListUpdaterApp(root)
+    app = ListUpdaterApp(root, shared_data)
     root.mainloop()
 
 
