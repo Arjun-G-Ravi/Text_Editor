@@ -13,7 +13,7 @@ class ListUpdaterApp:
         self.shared_data = shared_data
 
         self.listbox = tk.Listbox(root)
-        self.listbox.pack(pady=10)
+        self.listbox.pack(pady=10, fill=tk.BOTH, expand=True)
 
         self.update_data()
 
@@ -47,6 +47,10 @@ def editor(shared_queue, shared_data):
 
         if shared_queue:
             out = shared_queue.pop(0)
+            # Make changes to out here
+            hmap={'enter':''}
+            if out in hmap:
+                out = hmap[out]
             
             shared_data.append(out)
             # print("Shared data: ", shared_data)
