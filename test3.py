@@ -8,6 +8,7 @@ class ListUpdaterApp:
     def __init__(self, root, shared_data):
         self.root = root
         self.root.title("COW - Text Editor")
+        self.root.geometry("600x800")
 
         self.shared_data = shared_data
 
