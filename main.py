@@ -7,25 +7,35 @@ global shared_queue
 shared_queue = []
 
 def read_keyboard():
+    global shared_queue
     def on_key_event(e):
-        shared_queue.append(e)
+        global shared_queue
+        if e.event_type == 'up':
+            shared_queue.append(e.name)
+            print("Shared q 1:", shared_queue)
         return e
 
     keyboard.hook(on_key_event)
     keyboard.wait('esc')
         
 def editor():
-    l = []
-    if shared_queue:
-        l.append(shared_queue.pop(0))        
+    global shared_queue
+    out = ''
+    print(shared_queue)
+    while out != 'esc':
+        time.sleep(0.1)
+        print("Shared q 2:", shared_queue)
+        if shared_queue:
+            print("BOAT ------------------------")
+            out = shared_queue.pop(0)
+            print("Popped from shared_queue")      
 
-print(shared_queue)
+
 pKeyRead = Process(target=read_keyboard)
 pRunEditor = Process(target=editor)
+
 pRunEditor.start()
 pKeyRead.start()
+
 pRunEditor.join()
 pKeyRead.join()
-
-
-
