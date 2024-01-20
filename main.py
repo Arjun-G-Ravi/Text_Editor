@@ -1,3 +1,6 @@
+# Run the code with sudo in linux
+# Press esc to stop the bg processes
+
 import keyboard
 import time
 from multiprocessing import Process, Manager
