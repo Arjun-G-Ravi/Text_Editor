@@ -112,6 +112,8 @@ def editor(shared_queue, shared_data):
                 if r<len(shared_data)-1:
                     r+=1
                     c = min(c, len(shared_data[r]))
+            elif character == 'shift' or character == 'ctrl' or character == 'del' or character == 'tab':
+                raise 'Not Defined.'
             else:
                 if character in hmap:
                     character = hmap[character]
