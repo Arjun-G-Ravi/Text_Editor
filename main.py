@@ -47,13 +47,11 @@ def read_keyboard(shared_queue, shared_data):
 
 
 def editor(shared_queue, shared_data):
-    out = ''
     r, c = 0, 0
     if not shared_data:
         shared_data.append(manager.list())
-    while out != 'esc':
-        time.sleep(0.01)
 
+    while True:
         if shared_queue:
             character = shared_queue.pop(0)
             hmap = {'space': ' ', 'tab':'   '}
@@ -94,12 +92,14 @@ def editor(shared_queue, shared_data):
                     r+=1
                     c = min(c, len(shared_data[r]))
             elif len(character) > 1 and character not in hmap:
-                raise f'Undefined Defined ERROR'
+                raise f'ERROR: Character Undefined'
             else:
                 if character in hmap:
                     character = hmap[character]
                 shared_data[r].insert(c, character)
                 c += 1
+            
+            # To print the current key-presses
             print("Char:", character, ' CursorIndex:', r, c)
 
 
