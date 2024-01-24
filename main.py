@@ -20,7 +20,8 @@ class TextEditor:
     def update_data(self):  # to the GUI
         data = self.shared_data
         self.listbox.delete(0, tk.END)
-        for item in data:
+        for line in data:
+            item = ''.join(line)
             self.listbox.insert(tk.END, item)
 
         self.root.after(100, self.update_data)
@@ -41,37 +42,26 @@ def editor(shared_queue, shared_data):
     r, c = 0, 0
     if not shared_data:
         shared_data.append(manager.list())
-        # print('initiated')
-        # print(shared_data)
-    # print(type(shared_data))
     while out != 'esc':
         time.sleep(0.1)
 
         if shared_queue:
             character = shared_queue.pop(0)
             # Make changes to out here
-            # hmap = {'enter': '\n', 'space': ' '}
-            print("Char: ",character, r, c)
+            hmap = {'space':' '}
+            print("Char: ", character, r, c)
             if character == 'enter':
-                print('new line')
                 shared_data.append(manager.list())
-                # shared_data.append([])
-                r +=1
+                r += 1
                 c = 0
+            # if character == 'backspace':
+                   
             else:
-                shared_data[r].insert(c,character)
-                # print('here')
-                # print(shared_data[r])
-                
+                if character in hmap:
+                    character = hmap[character]
+                shared_data[r].insert(c, character)
                 c += 1
-            # print(shared_data)
 
-            # if out in hmap:
-            #     out = hmap[out]
-
-            # shared_data.append([out])
-
-            # print("Shared data: ", shared_data)
 
 
 def run_window(shared_data, shared_queue):
