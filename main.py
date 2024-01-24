@@ -6,18 +6,6 @@ import time
 from multiprocessing import Process, Manager
 import tkinter as tk
 
-
-# class TextEditor:
-#     def __init__(self, root, shared_data):
-#         self.root = root
-#         self.root.title("COW - Text Editor")
-#         self.root.geometry("600x800")
-#         self.shared_data = shared_data
-#         self.listbox = tk.Listbox(root)
-#         self.listbox.pack(pady=10, fill=tk.BOTH, expand=True)
-#         self.update_data()
-
-
 class TextEditor:
     def __init__(self, root, shared_data):
         self.root = root
@@ -50,8 +38,7 @@ class TextEditor:
 
 def read_keyboard(shared_queue, shared_data):
     def on_key_event(e, shared_queue):
-        global shift
-        if e.event_type == 'down' or e.name == 'esc':
+        if e.event_type == 'down':
             shared_queue.append(e.name)
         return e
 
@@ -69,7 +56,6 @@ def editor(shared_queue, shared_data):
 
         if shared_queue:
             character = shared_queue.pop(0)
-            # Make changes to out here
             hmap = {'space': ' '}
             if character == 'enter':
                 shared_data.append(manager.list())
@@ -77,14 +63,11 @@ def editor(shared_queue, shared_data):
                 c = 0
             elif character == 'backspace':
                 if r == 0 and c == 0:
-                    # Beginning
                     pass
                 elif c == 0:
-                    # one row up
                     r -= 1
                     c = len(shared_data[r])
                 else:
-                    # Remove character to left
                     shared_data[r].pop(c-1)
                     c -= 1
 
@@ -93,11 +76,9 @@ def editor(shared_queue, shared_data):
                     pass
                 elif c == 0:
                     print('Row up')
-                    # one row up
                     r -= 1
                     c = len(shared_data[r])
                 else:
-                    # print("Delete char")
                     c -= 1
 
             elif character == 'right':
@@ -112,8 +93,8 @@ def editor(shared_queue, shared_data):
                 if r<len(shared_data)-1:
                     r+=1
                     c = min(c, len(shared_data[r]))
-            elif character == 'shift' or character == 'ctrl' or character == 'del' or character == 'tab':
-                raise 'Not Defined.'
+            elif len(character) > 1 and character not in hmap:
+                raise f'Undefined Defined ERROR'
             else:
                 if character in hmap:
                     character = hmap[character]
@@ -126,7 +107,6 @@ def run_window(shared_data, shared_queue):
     root = tk.Tk()
     app = TextEditor(root, shared_data)
     root.mainloop()
-    print("Press esc to close")
 
 
 if __name__ == '__main__':
@@ -146,5 +126,6 @@ if __name__ == '__main__':
         pRunWindow.start()
 
         pRunWindow.join()
-        pKeyRead.join()
-        pRunEditor.join()
+        print("Closing ...")
+        pKeyRead.terminate()
+        pRunEditor.terminate()
