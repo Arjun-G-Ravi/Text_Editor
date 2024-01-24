@@ -2,7 +2,6 @@
 # Press esc to stop the bg processes
 
 import keyboard
-import time
 from multiprocessing import Process, Manager
 import tkinter as tk
 
