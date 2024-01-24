@@ -55,6 +55,7 @@ def editor(shared_queue, shared_data):
                 r += 1
                 c = 0
             # if character == 'backspace':
+                # if 
                    
             else:
                 if character in hmap:
