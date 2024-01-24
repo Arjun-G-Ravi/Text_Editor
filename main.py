@@ -40,10 +40,10 @@ def editor(shared_queue, shared_data):
     out = ''
     r, c = 0, 0
     if not shared_data:
-        shared_data.append([])
-        print('initiated')
-        print(shared_data)
-    print(type(shared_data))
+        shared_data.append(manager.list())
+        # print('initiated')
+        # print(shared_data)
+    # print(type(shared_data))
     while out != 'esc':
         time.sleep(0.1)
 
@@ -54,16 +54,17 @@ def editor(shared_queue, shared_data):
             print("Char: ",character, r, c)
             if character == 'enter':
                 print('new line')
-                shared_data.append([])
-                r += 1
+                shared_data.append(manager.list())
+                # shared_data.append([])
+                r +=1
                 c = 0
             else:
-                shared_data[0].append(character)
-                print('here')
-                print(shared_data[r])
+                shared_data[r].insert(c,character)
+                # print('here')
+                # print(shared_data[r])
                 
                 c += 1
-            print(shared_data)
+            # print(shared_data)
 
             # if out in hmap:
             #     out = hmap[out]
