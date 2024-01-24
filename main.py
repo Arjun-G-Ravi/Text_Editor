@@ -59,10 +59,7 @@ def run_window(shared_data, shared_queue):
     root = tk.Tk()
     app = TextEditor(root, shared_data)
     root.mainloop()
-    print("Close me now...")
-
-    shared_queue.append('esc')
-
+    print("Press esc to close")
 
 if __name__ == '__main__':
     with Manager() as manager:
