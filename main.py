@@ -67,16 +67,17 @@ def editor(shared_queue, shared_data):
                     shared_data[r].pop(c-1)
                     c -= 1
                     
-            # elif character == 'backspace':
-            #     if r == 0 and c == 0:
-            #         pass
-            #     elif c == 0 :
-            #         print('Row up')
-            #         # one row up
-            #         r -= 1
-            #     else:
-            #         print("Delete char")
-            #         c -= 1
+            elif character == 'left':
+                if r == 0 and c == 0:
+                    pass
+                elif c == 0 :
+                    print('Row up')
+                    # one row up
+                    r -= 1
+                    c = len(shared_data[r])
+                else:
+                    # print("Delete char")
+                    c -= 1
 
             else:
                 if character in hmap:
