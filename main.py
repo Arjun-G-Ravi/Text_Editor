@@ -56,7 +56,7 @@ def editor(shared_queue, shared_data):
 
         if shared_queue:
             character = shared_queue.pop(0)
-            hmap = {'space': ' '}
+            hmap = {'space': ' ', 'tab':'   '}
             if character == 'enter':
                 shared_data.append(manager.list())
                 r += 1
