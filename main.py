@@ -7,22 +7,18 @@ from multiprocessing import Process, Manager
 import tkinter as tk
 
 
-class ListUpdaterApp:
+class TextEditor:
     def __init__(self, root, shared_data):
         self.root = root
         self.root.title("COW - Text Editor")
         self.root.geometry("600x800")
-
         self.shared_data = shared_data
-
         self.listbox = tk.Listbox(root)
         self.listbox.pack(pady=10, fill=tk.BOTH, expand=True)
-
         self.update_data()
 
-    def update_data(self):
-
-        data = ''.join(self.shared_data).split('#$1')
+    def update_data(self): # to the GUI
+        data = ''.join(self.shared_data).split('\n')
         self.listbox.delete(0, tk.END)
         for item in data:
             self.listbox.insert(tk.END, item)
@@ -51,7 +47,7 @@ def editor(shared_queue, shared_data):
         if shared_queue:
             out = shared_queue.pop(0)
             # Make changes to out here
-            hmap = {'enter': '#$1', 'space':' '}
+            hmap = {'enter': '\n', 'space': ' '}
             if out in hmap:
                 out = hmap[out]
 
@@ -61,7 +57,7 @@ def editor(shared_queue, shared_data):
 
 def run_window(shared_data, shared_queue):
     root = tk.Tk()
-    app = ListUpdaterApp(root, shared_data)
+    app = TextEditor(root, shared_data)
     root.mainloop()
     print("Close me now...")
 
@@ -70,9 +66,10 @@ def run_window(shared_data, shared_queue):
 
 if __name__ == '__main__':
     with Manager() as manager:
-        shared_queue = manager.list()
-        shared_data = manager.list()
+        shared_queue = manager.list() # To share the keyboard inputs
+        shared_data = manager.list() # To share the data structre that stores the whole text
 
+        # Three processes run in parallel
         pKeyRead = Process(target=read_keyboard,
                            args=(shared_queue, shared_data))
         pRunEditor = Process(target=editor, args=(shared_queue, shared_data))
