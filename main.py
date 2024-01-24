@@ -24,7 +24,7 @@ class TextEditor:
             item = ''.join(line)
             self.listbox.insert(tk.END, item)
 
-        self.root.after(100, self.update_data)
+        self.root.after(10, self.update_data)
 
 
 def read_keyboard(shared_queue, shared_data):
@@ -43,26 +43,46 @@ def editor(shared_queue, shared_data):
     if not shared_data:
         shared_data.append(manager.list())
     while out != 'esc':
-        time.sleep(0.1)
+        time.sleep(0.01)
 
         if shared_queue:
             character = shared_queue.pop(0)
             # Make changes to out here
-            hmap = {'space':' '}
+            hmap = {'space': ' '}
             print("Char: ", character, r, c)
             if character == 'enter':
                 shared_data.append(manager.list())
                 r += 1
                 c = 0
-            # if character == 'backspace':
-                # if 
-                   
+            elif character == 'backspace':
+                if r == 0 and c == 0:
+                    # Beginning
+                    pass
+                elif c == 0 :
+                    # one row up
+                    r -= 1
+                    c = len(shared_data[r])
+                else:
+                    # Remove character to left
+                    shared_data[r].pop(c-1)
+                    c -= 1
+                    
+            # elif character == 'backspace':
+            #     if r == 0 and c == 0:
+            #         pass
+            #     elif c == 0 :
+            #         print('Row up')
+            #         # one row up
+            #         r -= 1
+            #     else:
+            #         print("Delete char")
+            #         c -= 1
+
             else:
                 if character in hmap:
                     character = hmap[character]
                 shared_data[r].insert(c, character)
                 c += 1
-
 
 
 def run_window(shared_data, shared_queue):
